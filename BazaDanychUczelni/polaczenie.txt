@@ -1,0 +1,26 @@
+ry {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection polaczenie = DriverManager.getConnection("jdbc:sqlserver://localhost\\sqlexpress;dataBaseName=BazaDanychUczelni","sa", "1234");
+            //Statement skladnia=polaczenie.createStatement();
+            Statement st = polaczenie.createStatement();
+            
+            //String sql = "select * from Przedmiot";
+            ResultSet rs = st.executeQuery("select * from Przedmiot");
+            
+            while(rs.next()){
+                String Nazwa = rs.getString("Nazwa");
+                String Dzien = String.valueOf(rs.getInt("Dzien"));
+                String Sala = String.valueOf(rs.getInt("Sala"));
+                
+                String tbData[] = {Nazwa,Dzien,Sala};
+                    DefaultTableModel tblModel = (DefaultTableModel)jTabelaPrzedmiot.getModel();
+                    tblModel.addRow(tbData);
+            }
+            polaczenie.close();
+            
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Błąd "+e.getMessage(),"Błąd aplikacji",
+                    JOptionPane.ERROR_MESSAGE);
+        }
